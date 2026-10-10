@@ -1,17 +1,14 @@
 "use client";
-/* eslint-disable react-hooks/immutability -- three.js objects (materials, refs) are
-   mutated per frame in useFrame. That is how React Three Fiber keeps animation out
-   of React renders, so these rules don't apply here. */
 
-import { RoundedBox, useTexture } from "@react-three/drei";
+import { RoundedBox } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import { Suspense, useMemo, useRef } from "react";
 import * as THREE from "three";
 
 /**
- * The phone Droid Transfer talks to, floating in 3D. Its screen is a real Android
- * home screen. It leans toward the pointer, glows while a file hovers over it, and
- * gives a small bump each time a file lands.
+ * The phone Droid Transfer talks to, floating in 3D. Its screen is an illustrated
+ * home screen drawn on a canvas. It leans toward the pointer, glows while a file
+ * hovers over it, and gives a small bump each time a file lands.
  */
 
 const PHONE_W = 2.0;
@@ -65,6 +62,81 @@ function useRoundedMask() {
   }, []);
 }
 
+/** An illustrated Android home screen: wallpaper, clock, a grid of app tiles and a search bar. */
+function useHomeScreen() {
+  return useMemo(() => {
+    const w = 744;
+    const h = 1608;
+    const canvas = document.createElement("canvas");
+    canvas.width = w;
+    canvas.height = h;
+    const ctx = canvas.getContext("2d")!;
+
+    // Wallpaper: deep green with two soft light pools.
+    ctx.fillStyle = "#0d1a14";
+    ctx.fillRect(0, 0, w, h);
+    const pool = (x: number, y: number, r: number, color: string) => {
+      const g = ctx.createRadialGradient(x, y, 0, x, y, r);
+      g.addColorStop(0, color);
+      g.addColorStop(1, "rgba(13,26,20,0)");
+      ctx.fillStyle = g;
+      ctx.fillRect(0, 0, w, h);
+    };
+    pool(w * 0.15, h * 0.18, w * 0.95, "rgba(92,204,143,0.55)");
+    pool(w * 0.95, h * 0.62, w * 0.8, "rgba(47,120,165,0.45)");
+    pool(w * 0.4, h * 1.0, w * 0.7, "rgba(92,204,143,0.25)");
+
+    const font = (size: number, weight = 500) => `${weight} ${size}px -apple-system, "SF Pro Text", "Helvetica Neue", Arial, sans-serif`;
+    ctx.fillStyle = "rgba(255,255,255,0.92)";
+
+    // Status bar
+    ctx.font = font(26, 600);
+    ctx.fillText("12:30", 44, 62);
+    ctx.fillRect(w - 92, 42, 40, 22);
+    ctx.fillRect(w - 50, 48, 5, 10);
+
+    // Clock and date
+    ctx.font = font(150, 300);
+    ctx.fillText("12:30", 52, 330);
+    ctx.font = font(32, 500);
+    ctx.fillStyle = "rgba(255,255,255,0.75)";
+    ctx.fillText("Saturday, 10 October", 58, 390);
+
+    // App tiles: two rows of four, then the dock.
+    const colors = ["#5ccc8f", "#f2b84b", "#5aa9f0", "#ef6f6c", "#a78bfa", "#2fa56b", "#f08f5a", "#62c6d6"];
+    const tile = 120;
+    const gap = (w - 4 * tile) / 5;
+    const drawTile = (col: number, y: number, color: string) => {
+      const x = gap + col * (tile + gap);
+      ctx.fillStyle = color;
+      ctx.beginPath();
+      ctx.roundRect(x, y, tile, tile, 34);
+      ctx.fill();
+      ctx.fillStyle = "rgba(255,255,255,0.85)";
+      ctx.beginPath();
+      ctx.roundRect(x + 38, y + 38, tile - 76, tile - 76, 10);
+      ctx.fill();
+    };
+    for (let i = 0; i < 8; i++) drawTile(i % 4, 860 + Math.floor(i / 4) * 190, colors[i]);
+    for (let i = 0; i < 4; i++) drawTile(i, 1250, ["#eef2ef", "#5aa9f0", "#5ccc8f", "#f2b84b"][i]);
+
+    // Search bar and gesture handle
+    ctx.fillStyle = "rgba(255,255,255,0.9)";
+    ctx.beginPath();
+    ctx.roundRect(44, 1440, w - 88, 92, 46);
+    ctx.fill();
+    ctx.fillStyle = "rgba(255,255,255,0.7)";
+    ctx.beginPath();
+    ctx.roundRect(w / 2 - 90, h - 26, 180, 8, 4);
+    ctx.fill();
+
+    const texture = new THREE.CanvasTexture(canvas);
+    texture.colorSpace = THREE.SRGBColorSpace;
+    texture.anisotropy = 8;
+    return texture;
+  }, []);
+}
+
 /** Soft green halo behind the phone, faded in while a file is over it. */
 function useGlow() {
   return useMemo(() => {
@@ -89,9 +161,7 @@ function Phone({ reducedMotion, arrivals, targeted }: PhoneSceneProps) {
   const bump = useRef(0);
   const seen = useRef(arrivals);
 
-  const screen = useTexture("/shots/phone-screen.png");
-  screen.colorSpace = THREE.SRGBColorSpace;
-  screen.anisotropy = 8;
+  const screen = useHomeScreen();
   const mask = useRoundedMask();
   const halo = useGlow();
 

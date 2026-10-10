@@ -1,10 +1,10 @@
-import { AndroidLogo, AppleLogo, ArrowsLeftRight, Camera, WifiHigh } from "@phosphor-icons/react/dist/ssr";
+import { AndroidLogo, AppleLogo, ArrowsLeftRight, Camera, CaretLeft, Circle, Square, WifiHigh } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { CopyCommand } from "@/components/CopyCommand";
 import { HeroDemo } from "@/components/HeroDemo";
 import { LiquidGlass } from "@/components/LiquidGlass";
 import { Reveal } from "@/components/Reveal";
-import { ScreenshotTabs } from "@/components/ScreenshotTabs";
+import { AppPreview, PhoneIllustration } from "@/components/AppPreview";
 import { DownloadGradient, LiquidMark } from "@/components/Visuals";
 import { adbCommand, quarantineCommand, release } from "@/lib/site";
 
@@ -85,8 +85,9 @@ function Showcase() {
           already do.
         </p>
       </Reveal>
-      <Reveal delay={0.06} className="mt-12">
-        <ScreenshotTabs />
+      <Reveal delay={0.06} className="mx-auto mt-12 max-w-5xl">
+        <AppPreview />
+        <p className="mt-4 text-center text-sm text-white/45">Click a folder to open it, or switch to icons.</p>
       </Reveal>
     </section>
   );
@@ -102,19 +103,29 @@ function Features() {
       <div className="mt-14 grid grid-cols-1 gap-4 md:grid-cols-6">
         <Reveal className="panel flex flex-col md:col-span-4 md:row-span-2">
           <div className="p-7 pb-0">
-            <h3 className="text-xl font-semibold tracking-tight">Your phone, in the sidebar</h3>
-            <p className="mt-2 max-w-[48ch] text-[var(--muted)]">
-              A live view of the phone&apos;s screen, its battery and free space, right next to its files.
+            <h3 className="text-xl font-semibold tracking-tight">Mirror and control your phone</h3>
+            <p className="mt-2 max-w-[50ch] text-[var(--muted)]">
+              Open the phone&apos;s screen in a window. Click to tap, drag to swipe, type from your keyboard. It only
+              runs while that window is open.
             </p>
           </div>
           <div className="mt-7 flex flex-1 items-end justify-center overflow-hidden bg-[radial-gradient(70%_70%_at_50%_100%,rgb(92_204_143/0.16),transparent)] px-8">
-            <Image
-              src="/shots/device-panel.png"
-              alt="The device panel: a live phone screen, battery level and free storage"
-              width={500}
-              height={405}
-              className="h-auto w-full max-w-[420px] rounded-t-2xl shadow-[0_-10px_60px_rgb(0_0_0/0.4)]"
-            />
+            <div className="w-[230px] rounded-t-[16px] bg-[#1d1f1e] shadow-[0_0_0_1px_rgb(255_255_255/0.1),0_-10px_60px_rgb(0_0_0/0.4)]">
+              <div className="flex items-center gap-1.5 px-3 py-2.5">
+                <span className="size-2.5 rounded-full bg-[#ff5f57]" />
+                <span className="size-2.5 rounded-full bg-[#febc2e]" />
+                <span className="size-2.5 rounded-full bg-[#28c840]" />
+                <span className="ml-2 text-xs font-semibold text-white/80">Pixel 9 Pro</span>
+              </div>
+              <div className="flex flex-col items-center gap-3 bg-black/60 px-6 pb-4 pt-3">
+                <PhoneIllustration className="w-[130px]" />
+                <div className="glass-pill flex gap-1 px-1.5 py-1 text-white/85">
+                  <span className="flex h-7 w-10 items-center justify-center"><CaretLeft size={14} weight="bold" /></span>
+                  <span className="flex h-7 w-10 items-center justify-center"><Circle size={13} weight="bold" /></span>
+                  <span className="flex h-7 w-10 items-center justify-center"><Square size={12} weight="bold" /></span>
+                </div>
+              </div>
+            </div>
           </div>
         </Reveal>
 
