@@ -1,0 +1,233 @@
+@import "tailwindcss";
+
+/*
+ * One theme (dark, like the app in dark mode), one accent (the app icon's green),
+ * one radius scale: pills for anything pressable, 24px for panels and media.
+ */
+:root {
+  --bg: #0b0d0c;
+  --bg-raised: #121614;
+  --fg: #eef2ef;
+  --muted: #98a39d;
+  --line: rgb(255 255 255 / 0.08);
+  --accent: #5ccc8f;
+  --accent-ink: #052014;
+  --radius-panel: 24px;
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+@theme inline {
+  --color-background: var(--bg);
+  --color-foreground: var(--fg);
+  --color-accent: var(--accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+html {
+  background: var(--bg);
+  color-scheme: dark;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+}
+
+/* Film grain on a fixed layer, so it never repaints while scrolling. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 60;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+::selection {
+  background: rgb(92 204 143 / 0.3);
+}
+
+/* Anything pressable gives way a touch under the finger. */
+.press {
+  transition: transform 160ms var(--ease-out), background-color 160ms var(--ease-out), color 160ms var(--ease-out);
+}
+.press:active {
+  transform: scale(0.97);
+  transition-duration: 100ms;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: var(--accent-ink);
+}
+.btn-ghost {
+  background: rgb(255 255 255 / 0.05);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+@media (hover: hover) and (pointer: fine) {
+  .btn-primary:hover {
+    background: #7ddba8;
+  }
+  .btn-ghost:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+/* ---------- Glass (web approximation of liquid glass, after liquid-glass-js) ---------- */
+
+.liquid-glass {
+  position: relative;
+  background: rgb(255 255 255 / 0.06);
+  -webkit-backdrop-filter: blur(16px) saturate(1.6);
+  backdrop-filter: blur(16px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.22),
+    inset 0 -1px 0 rgb(255 255 255 / 0.06),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 12px 40px rgb(0 0 0 / 0.35);
+}
+
+.glass-pill {
+  border-radius: 999px;
+  background: rgb(14 18 16 / 0.62);
+  -webkit-backdrop-filter: blur(14px) saturate(1.5);
+  backdrop-filter: blur(14px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.16),
+    inset 0 0 0 1px rgb(255 255 255 / 0.08),
+    0 10px 30px rgb(0 0 0 / 0.35);
+}
+
+.glass-tray {
+  border-radius: 20px;
+  background: rgb(18 22 20 / 0.6);
+  -webkit-backdrop-filter: blur(18px) saturate(1.5);
+  backdrop-filter: blur(18px) saturate(1.5);
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.14),
+    inset 0 0 0 1px rgb(255 255 255 / 0.07);
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .liquid-glass,
+  .glass-pill,
+  .glass-tray {
+    background: var(--bg-raised);
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+/* ---------- Hero ---------- */
+
+.hero-glow {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(55% 50% at 74% 38%, rgb(92 204 143 / 0.14), transparent 70%),
+    radial-gradient(40% 40% at 10% 0%, rgb(255 255 255 / 0.04), transparent 70%);
+}
+
+.demo {
+  position: relative;
+  aspect-ratio: 4 / 5;
+  width: 100%;
+  max-height: min(80dvh, 740px);
+  border-radius: var(--radius-panel);
+  overflow: hidden;
+  background:
+    radial-gradient(70% 55% at 50% 40%, rgb(92 204 143 / 0.12), transparent 70%),
+    #121614;
+  box-shadow:
+    inset 0 0 0 1px var(--line),
+    0 30px 80px rgb(0 0 0 / 0.45);
+  touch-action: pan-y;
+  user-select: none;
+}
+
+.demo-skeleton {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(110deg, #121614 30%, #19201c 50%, #121614 70%);
+  background-size: 200% 100%;
+}
+@media (prefers-reduced-motion: no-preference) {
+  .demo-skeleton {
+    animation: shimmer 1.6s linear infinite;
+  }
+}
+@keyframes shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
+/* Draggable file chips in the hero demo. */
+.file-chip {
+  touch-action: none;
+  cursor: grab;
+  border-radius: 14px;
+  background: rgb(255 255 255 / 0.06);
+  box-shadow: inset 0 0 0 1px var(--line);
+}
+.file-chip:active {
+  cursor: grabbing;
+}
+
+/* ---------- Media ---------- */
+
+.panel {
+  border-radius: var(--radius-panel);
+  background: var(--bg-raised);
+  box-shadow: inset 0 0 0 1px var(--line);
+  overflow: hidden;
+}
+
+.kbd {
+  display: inline-flex;
+  min-width: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 0.3rem 0.55rem;
+  font-family: var(--font-geist-mono), ui-monospace, monospace;
+  font-size: 13px;
+  background: rgb(255 255 255 / 0.06);
+  box-shadow:
+    inset 0 -2px 0 rgb(0 0 0 / 0.35),
+    inset 0 0 0 1px var(--line);
+}
+
+/* ---------- Download section backdrop (shadergradient) ---------- */
+
+.shader-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.shader-backdrop-fallback {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(70% 80% at 20% 30%, rgb(47 165 107 / 0.45), transparent 70%),
+    radial-gradient(60% 70% at 85% 80%, rgb(23 58 43 / 0.8), transparent 70%),
+    var(--bg);
+}
+.shader-backdrop-wash {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to right, rgb(11 13 12 / 0.15), rgb(11 13 12 / 0.65));
+}
