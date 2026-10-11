@@ -18,7 +18,7 @@ export const metadata: Metadata = {
   metadataBase: new URL(host ? `https://${host}` : "http://localhost:3000"),
   title: "Droid Transfer: Android file transfer for Mac",
   description:
-    "Droid Transfer moves photos, videos and folders between your Mac and an Android phone over USB or Wi-Fi. Free for macOS.",
+    "Droid Transfer moves photos, videos and folders between your Mac and an Android phone over USB or Wi-Fi. No USB debugging needed. Free for macOS.",
   openGraph: {
     title: "Droid Transfer",
     description: "Your Android phone, one drag away.",

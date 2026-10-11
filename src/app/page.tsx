@@ -1,7 +1,20 @@
-import { AndroidLogo, AppleLogo, ArrowsLeftRight, Camera, CaretLeft, Circle, Square, WifiHigh } from "@phosphor-icons/react/dist/ssr";
+import {
+  AndroidLogo,
+  AppleLogo,
+  ArrowsLeftRight,
+  Bug,
+  Camera,
+  CaretLeft,
+  Check,
+  Circle,
+  Minus,
+  Plug,
+  Square,
+  Usb,
+  WifiHigh,
+} from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { CopyCommand } from "@/components/CopyCommand";
-import { HeroDemo } from "@/components/HeroDemo";
 import { LiquidGlass } from "@/components/LiquidGlass";
 import { Reveal } from "@/components/Reveal";
 import { AppPreview, PhoneIllustration } from "@/components/AppPreview";
@@ -30,6 +43,9 @@ function Nav() {
           Droid Transfer
         </a>
         <nav className="flex items-center gap-1 text-sm text-white/70">
+          <a href="#connect" className="press hidden rounded-full px-3 py-2 hover:text-white sm:block">
+            Connect
+          </a>
           <a href="#features" className="press hidden rounded-full px-3 py-2 hover:text-white sm:block">
             Features
           </a>
@@ -54,42 +70,106 @@ function Hero() {
   return (
     <section id="top" className="relative isolate">
       <div className="hero-glow" />
-      <div className="mx-auto grid min-h-[100dvh] max-w-7xl items-center gap-12 px-4 pb-16 pt-28 sm:px-6 lg:grid-cols-[1.1fr_1fr] lg:gap-14 lg:pt-24">
-        <Reveal>
-          <h1 className="text-4xl font-semibold leading-[1.05] tracking-tighter md:text-5xl xl:text-[3.4rem]">
-            Android files on your Mac.
-            <span className="block text-[var(--muted)]">Just drag them.</span>
-          </h1>
-          <p className="mt-6 max-w-[46ch] text-lg leading-relaxed text-[var(--muted)]">
-            Droid Transfer moves photos, videos and folders between your Mac and Android phone, over USB or Wi-Fi.
+      <div className="mx-auto max-w-7xl px-4 pb-20 pt-32 sm:px-6 lg:pt-40">
+        <Reveal className="mx-auto max-w-3xl text-center">
+          <p className="glass-pill mx-auto inline-flex items-center gap-2 px-3.5 py-1.5 text-[13px] text-white/80">
+            <span className="size-1.5 rounded-full bg-[var(--accent)]" />
+            New in {release.version}: no USB debugging needed
           </p>
-          <div className="mt-9">
+          <h1 className="mt-7 text-4xl font-semibold leading-[1.05] tracking-tighter md:text-6xl">
+            Android files on your Mac.
+            <span className="block text-[var(--muted)]">Plug in and drag.</span>
+          </h1>
+          <p className="mx-auto mt-6 max-w-[52ch] text-lg leading-relaxed text-[var(--muted)]">
+            Choose File transfer on your phone and Droid Transfer opens with your photos, videos and folders. Copy
+            either way, over USB or Wi-Fi.
+          </p>
+          <div className="mt-9 flex flex-wrap items-center justify-center gap-x-5 gap-y-3">
             <DownloadButton />
+            <span className="text-sm text-white/45">
+              Free, {release.size}, {release.minOS} or later
+            </span>
           </div>
         </Reveal>
-        <Reveal delay={0.08}>
-          <HeroDemo />
+        <Reveal delay={0.08} className="mx-auto mt-16 max-w-5xl">
+          <AppPreview />
+          <p className="mt-4 text-center text-sm text-white/45">Click a folder to open it, or switch to icons.</p>
         </Reveal>
       </div>
     </section>
   );
 }
 
-function Showcase() {
+type Mode = { title: string; Icon: typeof Plug; setup: string; note: string };
+
+const MODES: Mode[] = [
+  {
+    title: "File transfer",
+    Icon: Plug,
+    setup: "Unlock the phone and pick File transfer in the USB notification.",
+    note: "Nothing to install, nothing to turn on.",
+  },
+  {
+    title: "USB debugging",
+    Icon: Bug,
+    setup: "Turn on USB debugging once in Developer options, and add Google's adb on the Mac.",
+    note: "Everything in File transfer, plus the extras.",
+  },
+];
+
+const ABILITIES: { label: string; transfer: boolean }[] = [
+  { label: "Browse, search and sort", transfer: true },
+  { label: "Copy to and from the Mac", transfer: true },
+  { label: "New folder, rename, move, delete", transfer: true },
+  { label: "Battery and free storage", transfer: true },
+  { label: "Install APKs and take screenshots", transfer: false },
+  { label: "Mirror and control the screen", transfer: false },
+  { label: "Connect over Wi-Fi", transfer: false },
+];
+
+function Modes() {
   return (
-    <section id="showcase" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-24 sm:px-6">
+    <section id="connect" className="scroll-mt-24 mx-auto max-w-7xl px-4 py-24 sm:px-6">
       <Reveal className="mx-auto max-w-3xl text-center">
-        <h2 className="text-3xl font-semibold tracking-tighter md:text-5xl">Feels like it came with your Mac.</h2>
+        <h2 className="text-3xl font-semibold tracking-tighter md:text-5xl">Two ways to connect. Both just work.</h2>
         <p className="mx-auto mt-5 max-w-[56ch] leading-relaxed text-[var(--muted)]">
-          A sidebar, a path bar, Finder icons and Liquid Glass on macOS 26. Sort, search, rename and delete like you
-          already do.
+          Start with File transfer, the mode every Android phone already has. Turn on USB debugging when you want
+          more, and Droid Transfer switches over by itself.
         </p>
       </Reveal>
-      <Reveal delay={0.06} className="mx-auto mt-12 max-w-5xl">
-        <AppPreview />
-        <p className="mt-4 text-center text-sm text-white/45">Click a folder to open it, or switch to icons.</p>
+
+      <Reveal delay={0.06} className="panel mx-auto mt-12 max-w-4xl overflow-hidden">
+        <div className="grid grid-cols-[1fr_5.5rem_5.5rem] sm:grid-cols-[1.4fr_1fr_1fr]">
+          <div className="flex items-end p-4 text-xs text-white/45 sm:p-6 sm:text-sm">What you can do</div>
+          {MODES.map(({ title, Icon, setup, note }, i) => (
+            <div
+              key={title}
+              className={`border-l border-[var(--line)] px-3 py-4 sm:p-6 ${i === 0 ? "bg-[linear-gradient(180deg,rgb(92_204_143/0.12),transparent)]" : ""}`}
+            >
+              <Icon size={22} className="text-[var(--accent)]" />
+              <h3 className="mt-3 text-sm font-semibold tracking-tight sm:text-base">{title}</h3>
+              <p className="mt-1.5 hidden text-sm leading-relaxed text-[var(--muted)] sm:block">{setup}</p>
+              <p className="mt-2 hidden text-xs text-white/45 sm:block">{note}</p>
+            </div>
+          ))}
+          {ABILITIES.map(({ label, transfer }) => (
+            <Row key={label} label={label} transfer={transfer} />
+          ))}
+        </div>
       </Reveal>
     </section>
+  );
+}
+
+function Row({ label, transfer }: { label: string; transfer: boolean }) {
+  const yes = <Check size={18} weight="bold" className="text-[var(--accent)]" aria-label="Yes" />;
+  const no = <Minus size={18} weight="bold" className="text-white/25" aria-label="No" />;
+  return (
+    <>
+      <div className="border-t border-[var(--line)] px-4 py-3.5 text-sm sm:px-6 sm:py-4">{label}</div>
+      <div className="flex items-center justify-center border-l border-t border-[var(--line)]">{transfer ? yes : no}</div>
+      <div className="flex items-center justify-center border-l border-t border-[var(--line)]">{yes}</div>
+    </>
   );
 }
 
@@ -106,7 +186,7 @@ function Features() {
             <h3 className="text-xl font-semibold tracking-tight">Mirror and control your phone</h3>
             <p className="mt-2 max-w-[50ch] text-[var(--muted)]">
               Open the phone&apos;s screen in a window. Click to tap, drag to swipe, type from your keyboard. It only
-              runs while that window is open.
+              runs while that window is open. Needs USB debugging.
             </p>
           </div>
           <div className="mt-7 flex flex-1 items-end justify-center overflow-hidden bg-[radial-gradient(70%_70%_at_50%_100%,rgb(92_204_143/0.16),transparent)] px-8">
@@ -133,7 +213,7 @@ function Features() {
           <ArrowsLeftRight size={26} className="text-[var(--accent)]" />
           <h3 className="mt-5 text-lg font-semibold tracking-tight">Any file, any size</h3>
           <p className="mt-2 text-[var(--muted)]">
-            No 4 GB limit. A long 4K video copies the same way a photo does, with live progress and a Stop button.
+            A 15 GB video copies the same way a photo does, with live progress and a Stop button.
           </p>
         </Reveal>
 
@@ -143,7 +223,15 @@ function Features() {
           <p className="mt-2 text-[var(--muted)]">Pair once with the code from Wireless debugging, then leave the cable in the drawer.</p>
         </Reveal>
 
-        <Reveal className="panel flex items-center gap-5 p-7 md:col-span-2">
+        <Reveal className="panel p-7 md:col-span-3">
+          <Usb size={26} className="text-[var(--accent)]" />
+          <h3 className="mt-5 text-lg font-semibold tracking-tight">Opens when you plug in</h3>
+          <p className="mt-2 text-[var(--muted)]">
+            Connect your phone and the window comes up on its own, right where you left off. Turn it off in Settings.
+          </p>
+        </Reveal>
+
+        <Reveal delay={0.05} className="panel flex items-center gap-5 p-7 md:col-span-3">
           <Image src="/app-icon.png" alt="" width={64} height={64} className="shrink-0" />
           <div>
             <h3 className="text-lg font-semibold tracking-tight">In the menu bar</h3>
@@ -151,16 +239,18 @@ function Features() {
           </div>
         </Reveal>
 
-        <Reveal delay={0.05} className="panel p-7 md:col-span-2">
+        <Reveal className="panel p-7 md:col-span-3">
           <div className="flex gap-2 text-[var(--accent)]">
             <AndroidLogo size={26} />
             <Camera size={26} />
           </div>
           <h3 className="mt-5 text-lg font-semibold tracking-tight">APKs and screenshots</h3>
-          <p className="mt-2 text-[var(--muted)]">Drop an APK to install it. Grab the phone&apos;s screen straight to your Mac.</p>
+          <p className="mt-2 text-[var(--muted)]">
+            With USB debugging on, drop an APK to install it, or grab the phone&apos;s screen straight to your Mac.
+          </p>
         </Reveal>
 
-        <Reveal delay={0.1} className="panel p-7 md:col-span-2">
+        <Reveal delay={0.05} className="panel p-7 md:col-span-3">
           <div className="flex flex-wrap gap-1.5">
             <span className="kbd">⌘I</span>
             <span className="kbd">⌘E</span>
@@ -179,24 +269,16 @@ function Install() {
   return (
     <section id="install" className="scroll-mt-24 mx-auto max-w-3xl px-4 py-24 sm:px-6">
       <Reveal>
-        <h2 className="text-3xl font-semibold tracking-tighter md:text-5xl">Set up in a few minutes.</h2>
+        <h2 className="text-3xl font-semibold tracking-tighter md:text-5xl">Set up in a minute.</h2>
       </Reveal>
       <ol className="mt-12 grid gap-10">
         <Reveal>
-          <Step n={1} title="Install Google's adb">
-            Droid Transfer talks to your phone through adb, Google&apos;s Android Debug Bridge. With Homebrew, run:
-            <div className="mt-4">
-              <CopyCommand command={adbCommand} />
-            </div>
-          </Step>
-        </Reveal>
-        <Reveal delay={0.05}>
-          <Step n={2} title="Download and drag into Applications">
+          <Step n={1} title="Download and drag into Applications">
             Open the disk image and drag Droid Transfer onto the Applications folder.
           </Step>
         </Reveal>
-        <Reveal delay={0.1}>
-          <Step n={3} title="Open it the first time">
+        <Reveal delay={0.05}>
+          <Step n={2} title="Open it the first time">
             Droid Transfer isn&apos;t notarized by Apple. If macOS blocks it, open System Settings, then Privacy &amp;
             Security, and click Open Anyway. Or run this once:
             <div className="mt-4">
@@ -204,10 +286,22 @@ function Install() {
             </div>
           </Step>
         </Reveal>
+        <Reveal delay={0.1}>
+          <Step n={3} title="Plug in and choose File transfer">
+            Unlock the phone, tap the USB notification and pick File transfer. Your files show up straight away. Only
+            one app can use the phone at a time, so quit Android File Transfer if it opens too.
+          </Step>
+        </Reveal>
         <Reveal delay={0.15}>
-          <Step n={4} title="Turn on USB debugging">
-            On the phone, open Settings, then About phone, and tap Build number seven times. Turn on USB debugging in
-            Developer options, plug in, and tap Allow.
+          <Step n={4} title="Optional: turn on USB debugging for the extras">
+            For installing APKs, screenshots, screen mirroring and Wi-Fi, install Google&apos;s adb:
+            <div className="mt-4">
+              <CopyCommand command={adbCommand} />
+            </div>
+            <p className="mt-4">
+              Then on the phone, open Settings, then About phone, and tap Build number seven times. Turn on USB
+              debugging in Developer options and tap Allow.
+            </p>
           </Step>
         </Reveal>
       </ol>
@@ -241,7 +335,8 @@ function Download() {
           <div>
             <h2 className="max-w-[16ch] text-3xl font-semibold tracking-tighter md:text-5xl">Your Android phone, one drag away.</h2>
             <p className="mt-4 max-w-[52ch] leading-relaxed text-white/75">
-              Free for macOS. One download for Apple silicon and Intel Macs. Works with Android 6 and later.
+              Free for macOS. One download for Apple silicon and Intel Macs. Works with any Android phone that offers File
+              transfer, and Android 6 or later over USB debugging.
             </p>
             <div className="mt-8">
               <DownloadButton />
@@ -291,7 +386,7 @@ export default function Home() {
       <Nav />
       <main>
         <Hero />
-        <Showcase />
+        <Modes />
         <Features />
         <Install />
         <Download />

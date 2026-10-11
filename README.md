@@ -4,9 +4,9 @@ The download site for [Droid Transfer](https://github.com/hexhad/droid-transfer)
 
 Next.js (App Router) + Tailwind CSS, with:
 
-- a 3D phone you can drag Mac files onto, the way the app works (`src/components/HeroDemo.tsx`, `PhoneScene.tsx`, React Three Fiber). Its screen is an illustrated home screen drawn on a canvas.
-- an interactive HTML preview of the app window (`src/components/AppPreview.tsx`): open folders, switch list and icon view
-- the install steps, with copy buttons for the `adb` and one-time `xattr` commands
+- an interactive HTML preview of the app window in the hero (`src/components/AppPreview.tsx`): open folders, switch list and icon view
+- a comparison of the two ways to connect: File transfer (MTP, no setup) and USB debugging (adb, for the extras)
+- the install steps, with copy buttons for the one-time `xattr` and optional `adb` commands
 - the Droid Transfer mark in liquid metal ([paper-design/shaders](https://github.com/paper-design/shaders), as in liquid-logo)
 - a shader gradient behind the download section ([shadergradient](https://github.com/ruucm/shadergradient))
 - a liquid glass nav (`src/components/LiquidGlass.tsx`, after [liquid-glass-js](https://github.com/dashersw/liquid-glass-js))
