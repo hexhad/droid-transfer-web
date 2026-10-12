@@ -1,9 +1,9 @@
 /** The macOS app. The installer is served from this site (public/downloads). */
 export const release = {
-  version: "2.2.0",
-  dmg: "/downloads/DroidTransfer-2.2.0.dmg",
+  version: "2.2.1",
+  dmg: "/downloads/DroidTransfer-2.2.1.dmg",
   size: "2.6 MB",
-  sha256: "328d03b7b06e2f4716c144c21e19972987de4c10fbc1e125c0f1107f2790edce",
+  sha256: "669d83d801efea6cf25ae421f5344d3e0efbd41f0c3a1e583010064d46a8f000",
   minOS: "macOS 13",
 };
 

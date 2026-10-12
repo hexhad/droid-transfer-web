@@ -19,6 +19,9 @@ export const metadata: Metadata = {
   title: "Droid Transfer: Android file transfer for Mac",
   description:
     "Droid Transfer moves photos, videos and folders between your Mac and an Android phone over USB or Wi-Fi. No USB debugging needed. Free for macOS.",
+  authors: [{ name: "HEXHAD", url: "https://hexhad.github.io" }],
+  creator: "HEXHAD",
+  publisher: "HEXHAD",
   openGraph: {
     title: "Droid Transfer",
     description: "Your Android phone, one drag away.",

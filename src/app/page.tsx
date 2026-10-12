@@ -15,6 +15,7 @@ import {
 } from "@phosphor-icons/react/dist/ssr";
 import Image from "next/image";
 import { CopyCommand } from "@/components/CopyCommand";
+import { MadeByHexhad } from "@/components/Hexhad";
 import { LiquidGlass } from "@/components/LiquidGlass";
 import { Reveal } from "@/components/Reveal";
 import { AppPreview, PhoneIllustration } from "@/components/AppPreview";
@@ -372,10 +373,14 @@ function Footer() {
       <div className="flex items-center gap-2.5">
         <Image src="/app-icon.png" alt="" width={22} height={22} />
         <span>Droid Transfer for macOS</span>
+        <MadeByHexhad />
       </div>
-      <a href="#top" className="hover:text-white">
-        Back to top
-      </a>
+      <div className="flex items-center gap-6">
+        <span>© {new Date().getFullYear()} HEXHAD</span>
+        <a href="#top" className="hover:text-white">
+          Back to top
+        </a>
+      </div>
     </footer>
   );
 }
