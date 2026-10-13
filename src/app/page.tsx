@@ -186,8 +186,9 @@ function Features() {
           <div className="p-7 pb-0">
             <h3 className="text-xl font-semibold tracking-tight">Mirror and control your phone</h3>
             <p className="mt-2 max-w-[50ch] text-[var(--muted)]">
-              Open the phone&apos;s screen in a window. Click to tap, drag to swipe, type from your keyboard. It only
-              runs while that window is open. Needs USB debugging.
+              Open the phone&apos;s screen in a window as smooth, full-resolution video at up to 60 fps, hardware
+              encoded on the phone and decoded on the Mac. Click to tap, drag to swipe, scroll with the trackpad, type
+              or paste from your keyboard. It only runs while that window is open. Needs USB debugging.
             </p>
           </div>
           <div className="mt-7 flex flex-1 items-end justify-center overflow-hidden bg-[radial-gradient(70%_70%_at_50%_100%,rgb(92_204_143/0.16),transparent)] px-8">
