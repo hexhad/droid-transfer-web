@@ -222,7 +222,7 @@ function Features() {
         <Reveal delay={0.1} className="panel p-7 md:col-span-2">
           <WifiHigh size={26} className="text-[var(--accent)]" />
           <h3 className="mt-5 text-lg font-semibold tracking-tight">USB or Wi-Fi</h3>
-          <p className="mt-2 text-[var(--muted)]">Pair once with the code from Wireless debugging, then leave the cable in the drawer.</p>
+          <p className="mt-2 text-[var(--muted)]">Scan a QR code from Wireless debugging to pair, then leave the cable in the drawer.</p>
         </Reveal>
 
         <Reveal className="panel p-7 md:col-span-3">
