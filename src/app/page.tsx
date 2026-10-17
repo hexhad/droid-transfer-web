@@ -75,7 +75,7 @@ function Hero() {
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="glass-pill mx-auto inline-flex items-center gap-2 px-3.5 py-1.5 text-[13px] text-white/80">
             <span className="size-1.5 rounded-full bg-[var(--accent)]" />
-            New in {release.version}: no USB debugging needed
+            New in {release.version}: pair over Wi-Fi like Android Studio
           </p>
           <h1 className="mt-7 text-4xl font-semibold leading-[1.05] tracking-tighter md:text-6xl">
             Android files on your Mac.
