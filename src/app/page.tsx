@@ -1,15 +1,22 @@
 import {
   AndroidLogo,
   AppleLogo,
+  ArrowClockwise,
   ArrowsLeftRight,
   Bug,
   Camera,
   CaretLeft,
   Check,
   Circle,
+  Clipboard,
   Minus,
   Plug,
+  Power,
+  Record as RecordIcon,
+  SpeakerSimpleHigh,
   Square,
+  SquaresFour,
+  TextAlignLeft,
   Usb,
   WifiHigh,
 } from "@phosphor-icons/react/dist/ssr";
@@ -75,7 +82,7 @@ function Hero() {
         <Reveal className="mx-auto max-w-3xl text-center">
           <p className="glass-pill mx-auto inline-flex items-center gap-2 px-3.5 py-1.5 text-[13px] text-white/80">
             <span className="size-1.5 rounded-full bg-[var(--accent)]" />
-            New in {release.version}: pair over Wi-Fi like Android Studio
+            New in {release.version}: Apps, Logcat and screen recording, like Android Studio
           </p>
           <h1 className="mt-7 text-4xl font-semibold leading-[1.05] tracking-tighter md:text-6xl">
             Android files on your Mac.
@@ -124,7 +131,8 @@ const ABILITIES: { label: string; transfer: boolean }[] = [
   { label: "New folder, rename, move, delete", transfer: true },
   { label: "Battery and free storage", transfer: true },
   { label: "Install APKs and take screenshots", transfer: false },
-  { label: "Mirror and control the screen", transfer: false },
+  { label: "Mirror and control the screen, with sound", transfer: false },
+  { label: "Manage apps, read Logcat, record the screen", transfer: false },
   { label: "Connect over Wi-Fi", transfer: false },
 ];
 
@@ -186,9 +194,10 @@ function Features() {
           <div className="p-7 pb-0">
             <h3 className="text-xl font-semibold tracking-tight">Mirror and control your phone</h3>
             <p className="mt-2 max-w-[50ch] text-[var(--muted)]">
-              Open the phone&apos;s screen in a window as smooth, full-resolution video at up to 60 fps, hardware
-              encoded on the phone and decoded on the Mac. Click to tap, drag to swipe, scroll with the trackpad, type
-              or paste from your keyboard. It only runs while that window is open. Needs USB debugging.
+              Open the phone&apos;s screen in a window as smooth, full-resolution video at up to 60 fps, with its
+              sound. Click to tap, drag to swipe, type or paste from your keyboard, and copy on the phone to paste on
+              the Mac. Power, volume, rotate, screenshot and record sit on a rail beside the screen, one click each.
+              It only runs while that window is open. Needs USB debugging.
             </p>
           </div>
           <div className="mt-7 flex flex-1 items-end justify-center overflow-hidden bg-[radial-gradient(70%_70%_at_50%_100%,rgb(92_204_143/0.16),transparent)] px-8">
@@ -199,12 +208,22 @@ function Features() {
                 <span className="size-2.5 rounded-full bg-[#28c840]" />
                 <span className="ml-2 text-xs font-semibold text-white/80">Pixel 9 Pro</span>
               </div>
-              <div className="flex flex-col items-center gap-3 bg-black/60 px-6 pb-4 pt-3">
-                <PhoneIllustration className="w-[130px]" />
-                <div className="glass-pill flex gap-1 px-1.5 py-1 text-white/85">
-                  <span className="flex h-7 w-10 items-center justify-center"><CaretLeft size={14} weight="bold" /></span>
-                  <span className="flex h-7 w-10 items-center justify-center"><Circle size={13} weight="bold" /></span>
-                  <span className="flex h-7 w-10 items-center justify-center"><Square size={12} weight="bold" /></span>
+              <div className="flex items-start gap-2.5 bg-black/60 px-4 pb-4 pt-3">
+                <PhoneIllustration className="w-[150px]" />
+                <div className="flex flex-col gap-2 text-white/85">
+                  {[
+                    [Power, SpeakerSimpleHigh, ArrowClockwise],
+                    [Camera, RecordIcon, Clipboard],
+                    [CaretLeft, Circle, Square],
+                  ].map((group, i) => (
+                    <div key={i} className="glass-pill flex flex-col gap-0.5 px-1 py-1">
+                      {group.map((Icon, j) => (
+                        <span key={j} className="flex size-7 items-center justify-center">
+                          <Icon size={13} weight="bold" />
+                        </span>
+                      ))}
+                    </div>
+                  ))}
                 </div>
               </div>
             </div>
@@ -223,6 +242,73 @@ function Features() {
           <WifiHigh size={26} className="text-[var(--accent)]" />
           <h3 className="mt-5 text-lg font-semibold tracking-tight">USB or Wi-Fi</h3>
           <p className="mt-2 text-[var(--muted)]">Pair like Android Studio: scan a QR code or pick the phone and type its pairing code. Paired phones reconnect by themselves.</p>
+        </Reveal>
+
+        <Reveal className="panel overflow-hidden md:col-span-6">
+          <div className="grid gap-px bg-[var(--line)] md:grid-cols-3">
+            <div className="bg-[var(--bg-raised)] p-7">
+              <SquaresFour size={26} className="text-[var(--accent)]" />
+              <h3 className="mt-5 text-lg font-semibold tracking-tight">Apps</h3>
+              <p className="mt-2 text-[var(--muted)]">
+                Every installed app with its version. Open, force stop, clear data, uninstall, or save the APK to your
+                Mac.
+              </p>
+              <ul className="mt-5 grid gap-1.5 font-mono text-xs text-white/70">
+                {[
+                  ["com.example.notes", "4.2.1"],
+                  ["com.example.maps", "11.80"],
+                  ["com.example.camera", "9.3.0"],
+                ].map(([pkg, ver]) => (
+                  <li key={pkg} className="flex justify-between gap-3 rounded-md bg-white/[0.04] px-2.5 py-1.5">
+                    <span className="truncate">{pkg}</span>
+                    <span className="text-white/40">{ver}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-[var(--bg-raised)] p-7">
+              <TextAlignLeft size={26} className="text-[var(--accent)]" />
+              <h3 className="mt-5 text-lg font-semibold tracking-tight">Logcat</h3>
+              <p className="mt-2 text-[var(--muted)]">
+                The phone&apos;s live log, colour-coded by level. Filter by level, text or app; pause, clear and save.
+              </p>
+              <ul className="mt-5 grid gap-1 font-mono text-[11px]">
+                {(
+                  [
+                    ["I", "ActivityManager", "Start proc 4182", "text-[var(--accent)]"],
+                    ["D", "NotesSync", "synced 12 notes", "text-sky-400"],
+                    ["W", "Battery", "temperature high", "text-amber-400"],
+                    ["E", "Camera", "open failed", "text-red-400"],
+                  ] as const
+                ).map(([level, tag, msg, tone]) => (
+                  <li key={tag} className="flex gap-2 overflow-hidden whitespace-nowrap">
+                    <span className={`w-3 shrink-0 font-bold ${tone}`}>{level}</span>
+                    <span className={`w-28 shrink-0 truncate ${tone}`}>{tag}</span>
+                    <span className="truncate text-white/60">{msg}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-[var(--bg-raised)] p-7">
+              <RecordIcon size={26} className="text-[var(--accent)]" />
+              <h3 className="mt-5 text-lg font-semibold tracking-tight">Record the screen</h3>
+              <p className="mt-2 text-[var(--muted)]">
+                Record the phone&apos;s screen to an MP4 on your Mac, up to three minutes, shown in Finder when done.
+              </p>
+              <div className="mt-5 flex items-center justify-between rounded-full bg-red-500/[0.14] px-3.5 py-2 text-xs">
+                <span className="flex items-center gap-2">
+                  <span className="size-2 rounded-full bg-red-500" />
+                  Recording 0:42
+                </span>
+                <span className="font-semibold">Stop</span>
+              </div>
+              <div className="mt-4 flex flex-wrap gap-1.5">
+                <span className="kbd">⌥⌘A</span>
+                <span className="kbd">⌥⌘L</span>
+                <span className="kbd">⌥⌘R</span>
+              </div>
+            </div>
+          </div>
         </Reveal>
 
         <Reveal className="panel p-7 md:col-span-3">
@@ -296,7 +382,7 @@ function Install() {
         </Reveal>
         <Reveal delay={0.15}>
           <Step n={4} title="Optional: turn on USB debugging for the extras">
-            For installing APKs, screenshots, screen mirroring and Wi-Fi, install Google&apos;s adb:
+            For mirroring, Wi-Fi, apps, Logcat, screen recording, APKs and screenshots, install Google&apos;s adb:
             <div className="mt-4">
               <CopyCommand command={adbCommand} />
             </div>

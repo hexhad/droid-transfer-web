@@ -7,6 +7,8 @@ import {
   Camera,
   CaretLeft,
   CaretRight,
+  Copy,
+  DeviceMobile,
   DotsThreeCircle,
   FileDoc,
   FilePdf,
@@ -18,7 +20,11 @@ import {
   ListBullets,
   MagnifyingGlass,
   MusicNote,
+  Plugs,
+  Record as RecordIcon,
   ShareFat,
+  SquaresFour,
+  TextAlignLeft,
   FilmStrip,
   type Icon,
 } from "@phosphor-icons/react";
@@ -274,23 +280,47 @@ function Tile({ item, selected, onSelect, onOpen }: { item: Item; selected: bool
 }
 
 /** The sidebar's device card: phone drawing, name, battery, storage, Mirror Screen. */
-export function DeviceCard({ large = false }: { large?: boolean }) {
+/** The sidebar's glass device card, as in the app: phone tile, battery and storage, one-tap tools. */
+export function DeviceCard() {
+  const tools: { label: string; Icon: Icon }[] = [
+    { label: "Mirror", Icon: Copy },
+    { label: "Capture", Icon: Camera },
+    { label: "Record", Icon: RecordIcon },
+    { label: "Apps", Icon: SquaresFour },
+    { label: "Logcat", Icon: TextAlignLeft },
+  ];
   return (
-    <div className={`flex items-start gap-3 ${large ? "gap-5" : ""}`}>
-      <PhoneIllustration className={large ? "w-[104px]" : "w-[58px]"} />
-      <div className="min-w-0 flex-1 pt-0.5">
-        <p className={`font-semibold ${large ? "text-lg" : ""}`}>Pixel 9 Pro</p>
-        <p className={`text-white/50 ${large ? "text-sm" : "text-[11px]"}`}>Google, Android 16</p>
-        <p className={`mt-2 flex items-center gap-1.5 ${large ? "text-sm" : "text-[11px]"}`}>
-          <BatteryHigh size={large ? 18 : 14} weight="fill" className="text-[var(--accent)]" /> 82%
-        </p>
-        <div className={`mt-2 h-1.5 overflow-hidden rounded-full bg-white/10 ${large ? "max-w-[200px]" : ""}`}>
-          <div className="h-full w-[46%] rounded-full bg-[var(--accent)]" />
-        </div>
-        <p className={`mt-1 text-white/50 ${large ? "text-sm" : "text-[11px]"}`}>68.4 GB free</p>
-        <span className={`mt-2.5 inline-flex items-center gap-1 rounded-full bg-white/[0.07] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)] ${large ? "px-3 py-1.5 text-sm" : "px-2 py-0.5 text-[11px]"}`}>
-          Mirror Screen
+    <div className="rounded-[14px] bg-white/[0.05] p-2.5 shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08),inset_0_1px_0_rgb(255_255_255/0.08)]">
+      <div className="flex items-center gap-2.5">
+        <span className="relative flex size-9 shrink-0 items-center justify-center rounded-[10px] bg-[linear-gradient(180deg,#5ccc8f,#3f9e6c)] shadow-[inset_0_1px_0_rgb(255_255_255/0.35)]">
+          <DeviceMobile size={18} weight="fill" className="text-white" />
+          <span className="absolute -bottom-1 -right-1 flex size-4 items-center justify-center rounded-full bg-[#3a3d3c] text-white/70">
+            <Plugs size={9} weight="bold" />
+          </span>
         </span>
+        <div className="min-w-0">
+          <p className="truncate font-semibold">Pixel 9 Pro</p>
+          <p className="truncate text-[11px] text-white/50">Google · Android 16</p>
+        </div>
+      </div>
+      <div className="mt-2.5 flex items-center justify-between text-[11px] text-white/55">
+        <span className="flex items-center gap-1">
+          <BatteryHigh size={14} weight="fill" /> 82%
+        </span>
+        <span>68.4 GB free</span>
+      </div>
+      <div className="mt-1.5 h-1 overflow-hidden rounded-full bg-white/10">
+        <div className="h-full w-[46%] rounded-full bg-[var(--accent)]" />
+      </div>
+      <div className="mt-3 grid grid-cols-5">
+        {tools.map(({ label, Icon }) => (
+          <span key={label} className="flex flex-col items-center gap-1">
+            <span className="flex size-7 items-center justify-center rounded-full bg-white/[0.07] text-[var(--accent)] shadow-[inset_0_0_0_1px_rgb(255_255_255/0.08)]">
+              <Icon size={14} weight="bold" />
+            </span>
+            <span className="text-[9px] text-white/50">{label}</span>
+          </span>
+        ))}
       </div>
     </div>
   );
